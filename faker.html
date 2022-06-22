@@ -10,28 +10,41 @@
         body {
             width: 100vw;
             height: 100vh;
+            background: #222;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
         }
         fieldset {
-            width: 100%;
+            width: 90%;
+            height: fit-content;
+            color:white;
+            font-family: sans-serif;
+            border-color: #00fffc;
+            border-radius: 5px;
         }
         #category_selector {
             width: 150px;
         }
         #affiche_resultat {
-            width:100%;
+            width:90%;
+            margin-top: 15px;
             display:flex;
             justify-content: center;
             flex-wrap: wrap;
             gap:1rem;
+            font-family: sans-serif;
+            color:white;
         }
 
         .card_container {
             width:20%;
             display:flex;
             flex-flow: row wrap;
-            border: 4px solid #b0215e;
+            border: 3px solid #00fffc;
             padding: 5px;
             margin:10px 0;
+            border-radius: 5px;
         }
 
         .card_child {
@@ -63,6 +76,42 @@
         let submitBTN = document.getElementById('submit_active');
         let pickedCategory = document.getElementById('category_selector');
         let quantity = document.getElementById('quantity_selector')
+        
+        let inputQTY = document.getElementById('quantity_selector');
+        inputQTY.addEventListener("change", function(e){
+            let input = e.target
+            if (isNaN(input.value) || input.value <= 0) {
+                input.value = 1
+            }
+        })
+  
+        inputQTY.addEventListener("keypress", function(event) {
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById('submit_active').click();
+            }
+        })
+
+
+        submitBTN.addEventListener('click', function(e){
+            e.preventDefault();
+            if (quantity.value > 0){
+                let queryQuantity = "?quantity=" + quantity.value 
+                // console.log(queryQuantity);
+                fetch('/fakeprofile'+queryQuantity)
+                .then(
+                    response => response.json()
+                )
+                .then(
+                    response2 => display_my_image(response2) 
+                )
+                .catch(
+                    function(err){
+                    console.log(err.message)
+                });               
+            }
+        })
 
         function display_my_image(myimageAPI) {
             mybody.innerHTML = ""
@@ -73,27 +122,6 @@
             }
         }
 
-        submitBTN.addEventListener('click', function(e){
-            e.preventDefault();
-            if (quantity.value > 0){
-                let queryQuantity = "?quantity=" + quantity.value 
-                console.log(queryQuantity);
-                fetch('/fakeprofile'+queryQuantity)
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    response2 => display_my_image(response2) 
-                    // return_API_data(response2)
-                )
-
-                .catch(
-                    function(err){
-                    console.log(err.message)
-                });               
-            }
-            
-        })
         //https://fakerapi.it/api/v1/images?_quantity=100
     </script>
 </body>
