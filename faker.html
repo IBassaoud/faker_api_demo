@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Faker api</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+        fieldset {
+            width: 100%;
+        }
+        #category_selector {
+            width: 150px;
+        }
+        #affiche_resultat {
+            width:100%;
+            display:flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap:1rem;
+        }
+
+        .card_container {
+            width:20%;
+            display:flex;
+            flex-flow: row wrap;
+            border: 4px solid #b0215e;
+            padding: 5px;
+            margin:10px 0;
+        }
+
+        .card_child {
+            width: 100%;
+        }
+
+        .card_container img {
+            align-items: flex-end;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset>
+        <legend>Search</legend>
+        <label for="category_selector">Category : </label>
+        <select type="text" name="category_selector" id="category_selector">
+        <option value="images">Images</option>
+        <option value="books">Books</option>
+        </select>
+        <label for="quantity_selector">Quantity : </label>
+        <input type="number" id="quantity_selector" name="quantity_selector">
+        <input type="submit" id="submit_active">
+    </fieldset>
+    <div id="affiche_resultat"></div>
+
+    <script>
+        let mybody = document.getElementById('affiche_resultat');
+        let submitBTN = document.getElementById('submit_active');
+        let pickedCategory = document.getElementById('category_selector');
+        let quantity = document.getElementById('quantity_selector')
+
+        function display_my_image(myimageAPI) {
+            mybody.innerHTML = ""
+            for (let el of myimageAPI){
+                mybody.innerHTML += `<div class="card_container"><h3 style="width:fit-content" class="card_child">${el.title}</h3>
+                <p class="card_child">${el.description}</p>
+                <img src="${el.url}" class="card_child"></div>`;
+            }
+        }
+
+        submitBTN.addEventListener('click', function(e){
+            e.preventDefault();
+            if (quantity.value > 0){
+                let queryQuantity = "?quantity=" + quantity.value 
+                console.log(queryQuantity);
+                fetch('/fakeprofile'+queryQuantity)
+                .then(
+                    response => response.json()
+                )
+                .then(
+                    response2 => display_my_image(response2) 
+                    // return_API_data(response2)
+                )
+
+                .catch(
+                    function(err){
+                    console.log(err.message)
+                });               
+            }
+            
+        })
+        //https://fakerapi.it/api/v1/images?_quantity=100
+    </script>
+</body>
+
+</html>
