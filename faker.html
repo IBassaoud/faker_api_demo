@@ -14,6 +14,7 @@
             display: flex;
             flex-flow: row wrap;
             justify-content: center;
+            align-content: flex-start;
         }
         fieldset {
             width: 90%;
@@ -28,13 +29,25 @@
         }
         #affiche_resultat {
             width:90%;
-            margin-top: 15px;
+            height: fit-content;
+            margin-top: 0.5rem;
             display:flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap:1rem;
+            gap:0.5rem;
             font-family: sans-serif;
             color:white;
+        }
+
+        @media (max-width: 690px) {
+            #affiche_resultat {
+                padding-left: 5%;
+                padding-right: 5%;
+                font-size: 14px;
+            }
+            .card_container {
+                width: 45%;
+            }
         }
 
         .card_container {
